@@ -70,3 +70,13 @@ Una decisión por línea. Cada una responde una duda de la entrevista o de `preg
 - D-39 La lista de espera se ordena por orden de llegada.
 - D-40 El registro pide nombre, email y teléfono.
 - D-41 El resumen del administrador muestra, por día y por deporte, la cantidad de reservas y los ingresos: el precio de las reservas jugadas más las deudas pagadas.
+- D-42 Para entrar al sistema se usa email y contraseña; el registro pide también contraseña. Hay un administrador inicial que se crea con el sistema; solo un administrador puede dar ese rol a otro usuario.
+- D-43 En el resumen, la cantidad cuenta las reservas jugadas por el día del turno. Los ingresos suman el precio de las reservas jugadas por el día del turno, y las deudas pagadas por el día en que el administrador las marcó como pagadas.
+- D-44 Una persona puede estar una sola vez en cada lista de espera.
+- D-45 Quien recibe una asignación automática sale de la lista en ese momento. Si la rechaza, no vuelve a la lista sola; puede anotarse de nuevo y queda última.
+- D-46 Un deporte sin precio base cargado no se ofrece para reservar.
+- D-47 El precio final y el 50% de una cancelación se redondean al peso entero más cercano.
+- D-48 Un turno está ocupado si no se puede reservar porque se pisa con una reserva confirmada, aunque no empiece a la misma hora. Solo se puede anotar en la lista de un turno ocupado.
+- D-49 Una reserva jugada es una confirmada cuyo turno terminó y no tiene ausencia marcada. El resumen se calcula al consultarlo: si después se marca una ausencia, el resumen cambia.
+- D-50 En el redondeo, el medio peso se redondea hacia arriba.
+- D-51 La hora para rechazar corre desde que el sistema envía el email.

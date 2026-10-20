@@ -54,7 +54,7 @@ RN-29. Si nadie de esa lista puede recibirlo, el turno queda libre para una rese
 RN-30. Si falta menos de 1 hora para el inicio, no hay asignación automática: se avisa a toda la lista y lo reserva el primero que entra.
 RN-31. En una liberación de rebote no hay asignación automática: se avisa por email a toda la lista, lo reserva el primero que entra, esa persona sale de la lista y los demás siguen anotados.
 RN-32. La forma de liberar el turno depende de la causa, no de si es la primera o una vez posterior.
-RN-33. Quien recibe una asignación automática puede rechazarla sin cargo durante la primera hora desde el email; al rechazar, el turno se libera como una cancelación de ese inicio exacto, y pasada esa hora la reserva queda firme.
+RN-33. Quien recibe una asignación automática puede rechazarla sin cargo durante la primera hora desde que el sistema envía el email; al rechazar, el turno se libera como una cancelación de ese inicio exacto, y pasada esa hora la reserva queda firme.
 RN-34. Todas las listas de espera de un turno se borran cuando ese turno empieza.
 RN-35. Si dos personas confirman a la vez la misma cancha, el mismo día y la misma hora, vale la primera reserva; la otra ve que el turno no está disponible y puede anotarse en la lista de espera.
 RN-36. El administrador bloquea una cancha por mantenimiento con inicio y fin; en ese período no se reserva, se cancelan sin cargo solo las reservas que se pisan con ese período, esas reservas devuelven el cupo y se avisa por email a cada persona.
@@ -71,8 +71,18 @@ RN-46. En esta versión, el sistema no mueve una reserva ni una lista de espera 
 RN-47. Una reserva activa es una reserva confirmada de esa semana, por el día del turno, que no se canceló ni se rechazó. Las reservas jugadas y las ausencias siguen contando para el cupo.
 RN-48. Un usuario bloqueado no puede anotarse en listas de espera. Sí puede cancelar las reservas que conserva, con las reglas normales.
 RN-49. La lista de espera se ordena por orden de llegada.
-RN-50. El registro pide nombre, email y teléfono.
-RN-51. El resumen del administrador muestra, por día y por deporte, la cantidad de reservas y los ingresos: el precio de las reservas jugadas más las deudas pagadas.
+RN-50. El registro pide nombre, email, teléfono y contraseña.
+RN-51. El resumen del administrador muestra, por día y por deporte, la cantidad de reservas jugadas por el día del turno y los ingresos: el precio de las reservas jugadas por el día del turno más las deudas pagadas por el día en que el administrador las marcó como pagadas.
+RN-52. Para entrar al sistema se usa email y contraseña.
+RN-53. Hay un administrador inicial que se crea con el sistema.
+RN-54. Solo un administrador puede dar el rol de administrador a otro usuario.
+RN-55. Una persona puede estar una sola vez en cada lista de espera.
+RN-56. Quien recibe una asignación automática sale de la lista en ese momento. Si la rechaza, no vuelve a la lista sola; puede anotarse de nuevo y queda última.
+RN-57. Un deporte sin precio base cargado no se ofrece para reservar.
+RN-58. El precio final y el 50% de una cancelación se redondean al peso entero más cercano. El medio peso se redondea hacia arriba.
+RN-59. Un turno está ocupado si no se puede reservar porque se pisa con una reserva confirmada, aunque no empiece a la misma hora. Solo se puede anotar en la lista de un turno ocupado.
+RN-60. Una reserva jugada es una confirmada cuyo turno terminó y no tiene ausencia marcada.
+RN-61. El resumen se calcula al consultarlo: si después se marca una ausencia, el resumen cambia.
 
 ## 5. Historias de usuario
 
@@ -110,14 +120,19 @@ Como usuario, quiero anotarme en la lista de espera de un turno ocupado, para to
 - Dado que el turno está ocupado y estoy dentro de mi anticipación, sin deuda, Cuando me anoto, Entonces no gasto una reserva activa (RN-12, RN-13, RN-27).
 - Dado que no estoy registrado, Cuando intento anotarme en una lista de espera, Entonces el sistema no me anota (RN-45).
 - Dado que dos personas se anotan en la misma lista, Cuando se libera el turno, Entonces queda primero quien llegó antes (RN-49).
+- Dado que ya estoy en la lista de ese turno, Cuando intento anotarme de nuevo, Entonces el sistema no crea otra fila (RN-55).
+- Dado un pádel confirmado de 18:00 a 19:30, Cuando quiero anotarme en la lista de las 18:30 de esa cancha, Entonces el turno está ocupado y el sistema me anota (RN-59).
+- Dado que ese inicio no se pisa con ninguna reserva confirmada, Cuando intento anotarme, Entonces el sistema no me anota (RN-59).
 - Dado que alguien cancela ese inicio exacto y falta 1 hora o más, Cuando el sistema lo libera, Entonces se lo asigna al primero de esa lista que no esté bloqueado, no deba y tenga cupo, y esa asignación gasta el cupo (RN-12, RN-28).
 - Dado que nadie de esa lista puede recibirlo, Cuando la liberación por cancelación termina, Entonces el turno queda libre y las listas de otros inicios no lo reciben solas (RN-29).
 
 ### HU-06
 Como usuario que recibió una asignación automática, quiero rechazarla, para no quedarme con un turno que no elegí.
 
-- Dado que el email llegó hace menos de 1 hora, Cuando rechazo, Entonces no hay deuda, vuelve el cupo y el turno se libera como una cancelación de ese inicio exacto: asignación automática si falta 1 hora o más, y aviso a toda la lista si falta menos (RN-12, RN-28, RN-30, RN-33, RN-44).
-- Dado que pasó 1 hora desde el email, Cuando esa reserva sigue en pie, Entonces quedó firme y cancelarla usa la regla de las 24 horas (RN-20, RN-33).
+- Dado que el sistema envió el email hace menos de 1 hora, Cuando rechazo, Entonces no hay deuda, vuelve el cupo y el turno se libera como una cancelación de ese inicio exacto: asignación automática si falta 1 hora o más, y aviso a toda la lista si falta menos (RN-12, RN-28, RN-30, RN-33, RN-44).
+- Dado que estaba en la lista y recibí la asignación automática, Cuando el sistema me la asigna, Entonces salgo de la lista en ese momento (RN-56).
+- Dado que rechacé esa asignación, Cuando no me anoto de nuevo, Entonces no vuelvo a la lista; si me anoto de nuevo y ya hay otra persona, quedo último (RN-56).
+- Dado que pasó 1 hora desde que el sistema envió el email, Cuando esa reserva sigue en pie, Entonces quedó firme y cancelarla usa la regla de las 24 horas (RN-20, RN-33).
 
 ### HU-07
 Como usuario de una lista de espera, quiero enterarme si el turno se libera de rebote, para reservarlo yo antes que otro.
@@ -161,16 +176,34 @@ Como administrador, quiero cargar precios, socios y feriados, para que el precio
 - Dado un pádel de día de semana a las 20:00 con precio base $10.000 reservado por un socio, Cuando se confirma, Entonces el precio final es $10.400 (RN-16, RN-17).
 - Dado que después cambio el precio base o cargo ese día como feriado, Cuando miro la reserva ya hecha, Entonces mantiene el precio original (RN-15, RN-19).
 - Dado que le quito la condición de socio a quien ya reservó, Cuando miro esa reserva, Entonces conserva la condición y el precio con los que se hizo (RN-14).
+- Dado que un deporte no tiene precio base cargado, Cuando alguien quiere reservarlo, Entonces ese deporte no se ofrece (RN-57).
+- Dado un pádel de día de semana a las 20:00 con precio base $10.001 reservado por un no socio, Cuando se confirma, Entonces el precio final es $13.001 (RN-58).
+- Dado un precio final de $13.001, Cuando se cancela con menos de 24 horas, Entonces la deuda del 50% es $6.501 (RN-20, RN-58).
 
 ### HU-13
-Como usuario no registrado, quiero dejar mi nombre, email y teléfono, para poder reservar.
+Como usuario no registrado, quiero dejar mi nombre, email, teléfono y contraseña, para poder reservar.
 
-- Dado que completo nombre, email y teléfono, Cuando me registro, Entonces el sistema crea mi usuario (RN-50).
+- Dado que completo nombre, email, teléfono y contraseña, Cuando me registro, Entonces el sistema crea mi usuario (RN-50).
 
 ### HU-14
 Como administrador, quiero ver el resumen por día y por deporte, para conocer las reservas y los ingresos.
 
-- Dado que hay reservas jugadas y deudas pagadas, Cuando miro un día y un deporte, Entonces veo la cantidad de reservas y los ingresos como el precio de las jugadas más las deudas pagadas (RN-51).
+- Dado que hay reservas jugadas y deudas pagadas, Cuando miro un día y un deporte, Entonces la cantidad cuenta las reservas jugadas por el día del turno, y los ingresos suman el precio de esas reservas más las deudas que marqué pagadas ese día (RN-51).
+- Dado una reserva confirmada cuyo turno ya terminó y no tiene ausencia marcada, Cuando consulto el resumen de ese día y ese deporte, Entonces cuenta como jugada (RN-60, RN-51).
+- Dado que esa reserva contaba como jugada, Cuando se marca la ausencia y vuelvo a consultar el resumen, Entonces ya no cuenta como jugada (RN-60, RN-61).
+
+### HU-15
+Como usuario registrado, quiero entrar con mi email y mi contraseña, para usar el sistema.
+
+- Dado que me registré, Cuando entro con mi email y mi contraseña, Entonces el sistema me deja entrar (RN-52).
+- Dado que la contraseña no es la del registro, Cuando intento entrar, Entonces el sistema no me deja entrar (RN-52).
+
+### HU-16
+Como administrador, quiero dar el rol de administrador a otro usuario, para que esa persona también administre.
+
+- Dado que el sistema se crea, Cuando todavía nadie dio el rol, Entonces ya hay un administrador inicial (RN-53).
+- Dado que soy administrador, Cuando le doy el rol de administrador a otro usuario, Entonces esa persona queda administrador (RN-54).
+- Dado que no soy administrador, Cuando intento dar ese rol, Entonces el sistema no lo permite (RN-54).
 
 ## 6. Casos borde
 
@@ -185,7 +218,7 @@ Como administrador, quiero ver el resumen por día y por deporte, para conocer l
 - Cancelar las 18:00 con 1 hora o más por delante: asignación automática solo a la lista de las 18:00. La lista de las 18:30 no lo recibe sola (RN-28, RN-29).
 - Cancelar ese inicio cuando falta menos de 1 hora: no hay asignación automática; se avisa a toda la lista (RN-30).
 - Nadie de la lista puede recibir el turno: queda libre para una reserva normal (RN-29).
-- Rechazar a los 30 minutos del email: sin deuda, el cupo vuelve y el turno se libera como una cancelación de ese inicio exacto, por RN-28 o RN-30 según cuánto falte. Rechazar pasada 1 hora: ya no es rechazo; la reserva está firme (RN-12, RN-33, RN-44).
+- Rechazar a los 30 minutos de que el sistema envió el email: sin deuda, el cupo vuelve y el turno se libera como una cancelación de ese inicio exacto, por RN-28 o RN-30 según cuánto falte. Rechazar pasada 1 hora desde ese envío: ya no es rechazo; la reserva está firme (RN-12, RN-33, RN-44).
 - La lista de un turno se borra cuando ese turno empieza, aunque nadie lo haya reservado (RN-34).
 - La tercera ausencia bloquea 15 días desde ese momento. Las reservas ya hechas siguen. Una deuda impaga sigue impidiendo reservas nuevas aunque el administrador desbloquee al usuario (RN-13, RN-26, RN-39).
 - Dos confirmaciones simultáneas del mismo turno: vale la primera (RN-35).
