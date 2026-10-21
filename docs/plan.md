@@ -43,13 +43,15 @@ Socio y no socio son la misma entidad. No hay tabla aparte.
 | --- | --- | --- |
 | id | identificador | |
 | nombre | texto | RN-50 |
-| email | texto | RN-50. Con la contraseña se entra al sistema (RN-52). |
+| email | texto | RN-50, RN-62. Único. Con la contraseña se entra al sistema (RN-52). |
 | telefono | texto | RN-50 |
 | contrasena | hash | RN-50, RN-52. Se guarda el hash, nunca el texto. No se devuelve en las respuestas. |
 | condicionSocio | socio o no socio | La marca el administrador (RN-07). Al registrarse queda no socio. |
 | rolAdministrador | administrador o no administrador | RN-53, RN-54. El registro lo deja en no administrador. Un administrador inicial se crea con el sistema. |
 | bloqueadoHasta | instante, nulo | RN-26. Quince días desde la ausencia que lo bloquea. |
 | desbloqueadoEn | instante, nulo | RN-39, RN-43. Si tiene valor, ese bloqueo no rige. Vuelve a nulo cuando hay un bloqueo nuevo. |
+
+Restricción única: un solo usuario por email (RN-62).
 
 ### Sesión
 
@@ -151,7 +153,7 @@ HU-07 no tiene ruta propia: el aviso lo manda Correo y quien llega primero usa `
 
 | Método | Ruta | Qué hace | Quién | HU |
 | --- | --- | --- | --- | --- |
-| POST | /usuarios | Registra con nombre, email, teléfono y contraseña. Queda no socio y sin rol de administrador. | Usuario no registrado | HU-13, HU-01 |
+| POST | /usuarios | Registra con nombre, email, teléfono y contraseña. Queda no socio y sin rol de administrador. Si el email ya existe, rechaza (RN-62). | Usuario no registrado | HU-13, HU-01 |
 | POST | /entrada | Entra con email y contraseña. Si no coinciden, no entra. Si coinciden, crea la Sesión y entrega el token. | Usuario registrado | HU-15 |
 | GET | /usuarios | Lista usuarios para marcar socio o desbloquear. | Administrador | HU-01, HU-12 |
 | PATCH | /usuarios/:usuarioId/condicion-socio | Marca socio o no socio. No cambia reservas ya hechas. | Administrador | HU-01, HU-12 |
@@ -239,6 +241,7 @@ HU-07 no tiene ruta propia: el aviso lo manda Correo y quien llega primero usa `
 | RN-59 | ListaDeEsperaService. Un turno está ocupado si no se puede reservar porque se pisa con una reserva confirmada, aunque no empiece a la misma hora. Solo en ese caso se anota. |
 | RN-60 | ResumenService. Jugada es una confirmada cuyo turno terminó y no tiene ausencia marcada. |
 | RN-61 | ResumenService. El resumen se calcula al consultarlo. Si después se marca una ausencia, el resultado cambia. |
+| RN-62 | UsuarioService. El email es único; si ya existe un usuario con ese email, el registro se rechaza. La base lo refuerza con la restricción única. |
 
 Correo, destinatarios que la spec ya nombra: reserva confirmada al titular; cancelación al titular; asignación automática a quien la recibe; mantenimiento a cada persona de las reservas canceladas y de las listas borradas; rebote (y el aviso de RN-30) a toda la lista de ese inicio.
 

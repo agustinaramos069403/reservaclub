@@ -80,3 +80,4 @@ Una decisión por línea. Cada una responde una duda de la entrevista o de `preg
 - D-49 Una reserva jugada es una confirmada cuyo turno terminó y no tiene ausencia marcada. El resumen se calcula al consultarlo: si después se marca una ausencia, el resumen cambia.
 - D-50 En el redondeo, el medio peso se redondea hacia arriba.
 - D-51 La hora para rechazar corre desde que el sistema envía el email.
+- D-52 El email es único. Si ya existe un usuario con ese email, el registro se rechaza.

@@ -83,6 +83,7 @@ RN-58. El precio final y el 50% de una cancelación se redondean al peso entero 
 RN-59. Un turno está ocupado si no se puede reservar porque se pisa con una reserva confirmada, aunque no empiece a la misma hora. Solo se puede anotar en la lista de un turno ocupado.
 RN-60. Una reserva jugada es una confirmada cuyo turno terminó y no tiene ausencia marcada.
 RN-61. El resumen se calcula al consultarlo: si después se marca una ausencia, el resumen cambia.
+RN-62. El email es único. Si ya existe un usuario con ese email, el registro se rechaza.
 
 ## 5. Historias de usuario
 
@@ -184,6 +185,7 @@ Como administrador, quiero cargar precios, socios y feriados, para que el precio
 Como usuario no registrado, quiero dejar mi nombre, email, teléfono y contraseña, para poder reservar.
 
 - Dado que completo nombre, email, teléfono y contraseña, Cuando me registro, Entonces el sistema crea mi usuario (RN-50).
+- Dado que existe un usuario con ana@test.com, Cuando otra persona se registra con ese email, Entonces el registro se rechaza (RN-62).
 
 ### HU-14
 Como administrador, quiero ver el resumen por día y por deporte, para conocer las reservas y los ingresos.
