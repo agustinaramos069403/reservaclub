@@ -9,7 +9,7 @@ Estado: `[ ]` pendiente · `[x]` hecha.
 ## Etapa 1 — Base
 
 ### T-01 — Proyecto backend y framework de tests
-- **Estado:** [ ]
+- **Estado:** [x]
 - **Agente:** Tester + Dev backend
 - **Qué hacer:** Crear el backend Node.js + TypeScript con Express en capas Controller, Service y Repository. Configurar un framework de tests que permita fijar el Reloj y un Correo en memoria. Sin endpoints de dominio todavía.
 - **RN / HU:** (infraestructura; sin RN de dominio)
